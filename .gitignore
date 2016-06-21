@@ -1,2 +1,4 @@
 .vagrant
 bc-images
+*.jpg
+*.png
