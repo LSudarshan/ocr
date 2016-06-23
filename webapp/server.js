@@ -1,5 +1,6 @@
 var express =   require("express");
 var multer  =   require('multer');
+var hocrParser = require('./hocr_parser')
 const spawn = require('child_process').spawn;
 var fs = require('fs');
 
@@ -30,13 +31,9 @@ app.post('/api/image',function(req,res){
             return res.end("Error uploading file.");
         }
         const tesseractExec = spawn('./upload-local-file.sh', ['./uploads/'+req.file.originalname]);
+        hocrOutput = "";
         tesseractExec.stdout.on('data', (data) => {
-          fs.appendFile("./out.html", data, function(err) {
-              if(err) {
-                  return console.log(err);
-              }
-              console.log("Tesseract output was written to file");
-          }); 
+          hocrOutput += data;
         });
 
         tesseractExec.stderr.on('data', (data) => {
@@ -45,7 +42,9 @@ app.post('/api/image',function(req,res){
 
         tesseractExec.on('close', (code) => {
           console.log("child process exited with code " + code);
-          res.end("File is uploaded");
+          parsedOutput = hocrParser.parse(hocrOutput);
+          console.log(parsedOutput);
+          res.end("Completed OCR parsing");
         });
     });
 });

@@ -1,16 +1,19 @@
-var toJson = function(word) {
-	var result = word.title.split(';');
+cheerio = require('cheerio');
+fs = require('fs');
+
+var toJson = function(wordHtml) {
+	var result = wordHtml.attribs.title.split(';');
 	var coordinates = findCoordinates(result[0].trim().split('bbox ')[1]);
 	var confidence = result[1].trim().split('x_wconf ')[1]
 
-	return {'word':word.innerText,'coordinates':coordinates, 'confidence': confidence}
+	return {'word':wordHtml.children[0].data,'coordinates':coordinates, 'confidence': confidence}
 }
 
 var processWords = function(ocr_words){
  var words = [];
  var numbers= [];
  for(var i =0; i< ocr_words.length; i++){
-	if(ocr_words[i].hasAttribute('dir')){
+	if(ocr_words[i].attribs['dir']){
 		words.push(toJson(ocr_words[i]));
 	}else{
 		numbers.push(toJson(ocr_words[i]));
@@ -28,9 +31,12 @@ var findCoordinates = function(coordinates){
   'y2':parseInt(coordinate[3])}
   }
 
-  var parse = function(){
-  	var ocr_words = document.getElementsByClassName('ocrx_word');
+  var parse = function(text){
+  	$ = cheerio.load(text);
+  	var ocr_words = $('.ocrx_word').get();
   	return processWords(ocr_words);
   }
 
-	modules.exports.parse = parse;
+module.exports.parse = parse;
+
+
