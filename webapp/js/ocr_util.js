@@ -1,6 +1,6 @@
 var hocr_parser = require('hocr_parser');
 var ocr_data = hocr_parser.parse();
-var dictionary = {'salary' : ['Salary','Urloubsentgelt']}
+var dictionary = require('./dictionary');
 
 // Very primitive form of finding the associated number : Takes the first right
 //number after the word
