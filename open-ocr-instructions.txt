@@ -1,0 +1,21 @@
+brew install docker
+brew install docker-machine
+brew cask install virtualbox
+brew cask install dockertoolbox
+docker-machine rm default
+docker-machine create --driver virtualbox default
+docker-machine start
+eval "$(docker-machine env default)"
+git clone https://github.com/tleyden/open-ocr.git
+cd docker-compose
+docker-compose up -d
+docker ps # gives HTTP_PORT
+docker-machine env # gives DOCKER_HOST
+
+
+# Test format: $ curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://bit.ly/ocrimage","engine":"tesseract"}' http://IP_ADDRESS_OF_DOCKER_HOST:HTTP_PORT/ocr
+
+curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://bit.ly/ocrimage","engine":"tesseract"}' http://192.168.99.100:9292/ocr
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://i.imgur.com/pk4CeOl.png","engine":"tesseract", "engine_args":{"config_vars":{"tessedit_create_hocr": "1", "tessedit_pageseg_mode": "1"}}}' http://192.168.99.100:9292/ocr > out.html

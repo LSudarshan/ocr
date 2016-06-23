@@ -2,3 +2,4 @@
 bc-images
 *.jpg
 *.png
+.DS_Store
