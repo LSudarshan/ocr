@@ -17,5 +17,6 @@ docker-machine env # gives DOCKER_HOST
 
 curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://bit.ly/ocrimage","engine":"tesseract"}' http://192.168.99.100:9292/ocr
 
+curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://i.imgur.com/03i2mBv.png","engine":"tesseract", "engine_args":{"config_vars":{"tessedit_create_hocr": "1", "tessedit_pageseg_mode": "1"}}}' http://192.168.99.100:9292/ocr > out.html
 
 curl -X POST -H "Content-Type: application/json" -d '{"img_url":"http://i.imgur.com/pk4CeOl.png","engine":"tesseract", "engine_args":{"config_vars":{"tessedit_create_hocr": "1", "tessedit_pageseg_mode": "1"}}}' http://192.168.99.100:9292/ocr > out.html
