@@ -1,6 +1,6 @@
 var express =   require("express");
 var multer  =   require('multer');
-var hocrParser = require('./hocr_parser')
+var hocrParser = require('./js/hocr_parser')
 const spawn = require('child_process').spawn;
 var fs = require('fs');
 
