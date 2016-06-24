@@ -1,4 +1,4 @@
 {
-	"salary" : ["salary", "urloubsentgelt"],
+	"salary" : ["salary", "urloubsentgelt", "Steurbrutto"],
 	"gross": ["burttogehat", "bruttobetrag"]
 }

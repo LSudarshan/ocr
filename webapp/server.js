@@ -1,10 +1,12 @@
-var express =   require("express");
+var express =   require('express');
 var multer  =   require('multer');
-var hocrParser = require('./js/hocr_parser')
+var hocrParser = require('./js/hocr_parser');
+var ocr_util = require('./js/ocr_util');
+
 const spawn = require('child_process').spawn;
 var fs = require('fs');
 
-var app         =   express();
+var app = express();
 
 app.use(express.static('uploads'));
 
@@ -44,7 +46,12 @@ app.post('/api/image',function(req,res){
           console.log("child process exited with code " + code);
           parsedOutput = hocrParser.parse(hocrOutput);
           console.log(parsedOutput);
-          res.end("Completed OCR parsing");
+		  ocr_util.set_ocr_data(parsedOutput);
+		  var salary_amount = ocr_util.findAssociatedNumbers('salary');
+		  Object.keys(salary_amount).forEach(function(key){
+			  console.log(key + " : " + salary_amount[key]);
+		  });
+		  res.end("Your salary is: " + salary_amount.word);
         });
     });
 });
