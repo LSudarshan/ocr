@@ -32,6 +32,7 @@ app.post('/api/image',function(req,res){
             console.log(err);
             return res.end("Error uploading file.");
         }
+
         const tesseractExec = spawn('./upload-local-file.sh', ['./uploads/'+req.file.originalname]);
         hocrOutput = "";
         tesseractExec.stdout.on('data', (data) => {
@@ -46,12 +47,14 @@ app.post('/api/image',function(req,res){
           console.log("child process exited with code " + code);
           parsedOutput = hocrParser.parse(hocrOutput);
           console.log(parsedOutput);
-		  ocr_util.set_ocr_data(parsedOutput);
-		  var salary_amount = ocr_util.findAssociatedNumbers('salary');
-		  Object.keys(salary_amount).forEach(function(key){
-			  console.log(key + " : " + salary_amount[key]);
-		  });
-		  res.end("Your salary is: " + salary_amount.word);
+		      ocr_util.set_ocr_data(parsedOutput);
+		      var salary_amount = ocr_util.findAssociatedNumbers('salary');
+          console.log(salary_amount);
+		      Object.keys(salary_amount).forEach(function(key){
+			     console.log(key + " : " + salary_amount[key]);
+		      });
+		    
+          res.end("Your salary is: " + salary_amount.word);
         });
     });
 });

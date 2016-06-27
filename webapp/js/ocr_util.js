@@ -35,11 +35,15 @@ var findAssociatedNumbers = function(word){
 }
 
 var checkForAllSynonyms = function(word){
+  var synonymns = dictionary.get_synonyms(word);
+  console.log('found synonymns: ' + synonymns);
   return ocr_words.filter(function(ocr_word){
-    return dictionary.get_synonyms(word).find(function(value){
-        return value == ocr_word.word;
-    })
+    console.log('checking synonymns for ocr word: ' + ocr_word.word);
+    var found = synonymns.indexOf(ocr_word.word.toLowerCase()) > -1;
+    console.log('found: ' + found);
+    return found;
   });
-}
+};
+
 exports.set_ocr_data = set_ocr_data;
 exports.findAssociatedNumbers = findAssociatedNumbers;
